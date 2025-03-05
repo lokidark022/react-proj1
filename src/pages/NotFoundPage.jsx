@@ -5,8 +5,8 @@ function NotFoundPage(){
 
     return (<>
     
-    404 Page not exist
-    <Link to={"/"}> Login 
+   <h1>404 Page not exist</h1> 
+    <Link to={"/"}> Back to website 
     </Link>
     </>)
 }
