@@ -4,6 +4,7 @@ import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Card from 'react-bootstrap/Card'
+import {Link} from 'react-router-dom'
 function Register(){
 
 
@@ -35,7 +36,7 @@ function Register(){
             </Form.Group>
             <Row>
                 <Col><Button size='lg' variant='outline-success' type="submit"> Submit </Button></Col>
-                <Col><a href="#">Already Registered? <br></br>Login</a></Col>
+                <Col> <Link to={"/"}>Already Registered?<br></br>Login</Link> </Col>
             </Row>
             
         </Form>

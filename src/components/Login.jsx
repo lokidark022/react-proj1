@@ -6,6 +6,7 @@ import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import LoginCore from  './core/LoginCore.jsx'
+import {Link} from 'react-router-dom'
 // import './css/Login.css'
 function Login(){
         <LoginCore/>
@@ -29,7 +30,7 @@ function Login(){
             </Form.Group>
             <Row>
                 <Col><Button size='lg' variant="outline-primary" type="submit"> Submit </Button></Col>
-                <Col><a href="#">Click here to Register</a> </Col>
+                <Col><Link to={"/register"}>Click herer to register</Link></Col>
             </Row>
             
         </Form>
