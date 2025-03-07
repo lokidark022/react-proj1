@@ -1,16 +1,17 @@
+import React, { useState, useContext} from 'react';
 import Header from './format/Header.jsx'
+import { useOutletContext} from "react-router-dom";
 import Content from './format/Content.jsx'
 import Footer from './format/Footer'
 import './css/HomePage.css'
-
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-
-function HomePage (){
-
-
-
+function HomePage(){
+    const context = useOutletContext()
+    console.log(context);
+    // const users = useContext(NameContext);
+    // console.log(users);
     return (
 
         <>

@@ -3,7 +3,7 @@ import RegisterPage from './pages/RegisterPage.jsx'
 import HomePage from './pages/HomePage.jsx'
 import NotFoundPage from './pages/NotFoundPage.jsx'
 import ProtectedRoutes from './util/ProtectedRoutes.jsx'
-import {createBrowserRouter,RouterProvider} from 'react-router-dom'
+import {createBrowserRouter,RouterProvider, Outlet} from 'react-router-dom'
 
 import './App.css'
 
@@ -18,6 +18,8 @@ function App() {
   //   {path:"*", element:<NotFoundPage/>}
   // ]);
 
+  const temp = 'test from apps';
+  const isValid = true;
   const router = createBrowserRouter(
     [
         {
@@ -33,7 +35,7 @@ function App() {
       element: <LoginPage />,
         },
         {
-      element: <ProtectedRoutes />,
+      element: <ProtectedRoutes></ProtectedRoutes>,
       children: [
               {
                   path: "/homepage",
@@ -53,6 +55,7 @@ function App() {
         //  <RegisterPage/>
  
     <>
+
       <RouterProvider router={router}/>
     </>
   )
