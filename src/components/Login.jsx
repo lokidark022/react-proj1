@@ -1,5 +1,6 @@
 
 import Form from 'react-bootstrap/Form'
+import Cookies from 'js-cookie';
 import HomePage from '../pages/HomePage'
 import FloatingLabel from 'react-bootstrap/FloatingLabel'
 import Button from 'react-bootstrap/Button'
@@ -7,12 +8,14 @@ import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Alert from 'react-bootstrap/Alert';
-import React, { useState, createContext} from 'react';
-import {Link, useNavigate} from 'react-router-dom'
+import React, { useState, createContext, useEffect} from 'react';
+import {Link, useNavigate, Outlet} from 'react-router-dom'
 import  LoginCore from './core/LoginCore.js';
 import axios from 'axios'
 import ProtectedRoutes from '../util/ProtectedRoutes.jsx'
-import dataEncrypt from './dataEncrypt.js'
+import * as CryptoJS from 'crypto-js'
+import dataSecured from './core/dataSecured.js';
+import App from '../App.jsx'
 // import './css/Login.css'
 // const userDatas = [{test:'test'}];
 
@@ -31,9 +34,25 @@ let userData = (userDatas) =>{
   return userData
 }
 
+//  function data_secured(text,type,pass){
 
+//   const secretKey = pass
+//   let result = '';
+//   if(type == 'enc'){
+//       const cipherText = CryptoJS.AES.encrypt(text, secretKey).toString()
+//       result = cipherText;
+//   }else if(type == 'dec'){
+//       const bytes = CryptoJS.AES.decrypt(text, secretKey )
+//       const plainText = bytes.toString(CryptoJS.enc.Utf8)
+//       result = plainText;
+    
+//   }
+
+//   return result
+//  }
 
  function Login(){
+    var datakey = "";
     //  const NameContext= createContext();
     const NameContext = createContext("light");
     const [show, setShow] = useState(false);
@@ -44,32 +63,60 @@ let userData = (userDatas) =>{
     const [password, setPassword] = useState()
     const navigate = useNavigate();
     const handleSubmit = async (e) => {
-      
+
+    //  console.log(dataSecured('test','enc', '123'));
         // console.log(stats)
         e.preventDefault();
 
 
-      
+      // const userData2 = {
+      //   "isValid": false,
+      //   "tmessage": "Valid User",
+      //   "bmessage": "Valid Credentials",
+      //   "email": "admin@admin.com",
+      //   "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhZG1pbkBhZG1pbi5jb20iLCJpYXQiOjE3NDEzMTc4MTUsImV4cCI6MTc0MTMxNzg0NX0.x-mcnX88qoDpWQi05XYP4X71xvEKtISfIWoRDzlQML8",
+      //   "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhZG1pbkBhZG1pbi5jb20iLCJpYXQiOjE3NDEzMTc4MTV9.1IJbLTWjq6wsv0_GzuRMHQ8m3rg5aeJfMsRex8psL90"
+      // };
        
   
       try{
         const res = await axios.post('http://localhost:5000/',{email,password});
-         console.log(res.data);
-         const userDatas = res.data;
+        const userDatas = res.data;
+        datakey = userDatas.dataKey;
+        Cookies.set('tempKey', datakey, { expires: 7 });
+        // console.log(userDatas.dataKey);
+        const stringti = JSON.stringify(userDatas);
+
       
+          Cookies.set('authData', dataSecured(stringti,'enc',datakey), { expires: 7 });
+          const authData = Cookies.get('authData');
+          console.log(' encryp Data: ' + authData );
+          console.log(' Decrypt Data: ' + dataSecured(dataSecured(stringti,'enc',datakey),'dec', datakey));
+        
+    
+            dataSecured(null,null,null);
+           
+
+ 
+ 
+
+
+    
+
+
         // userData = res.data;
         userData(userDatas);
         setUsers(res.data);
         setShow(true);
- 
+        // const test = JSON.stringify(userData2);
       
 
         if(res.data.isValid){
-       
+          
      
-          // setTimeout(function() {
-          //   navigate('/homepage');
-          // }, 1000);
+          setTimeout(function() {
+            navigate('/homepage');
+          }, 1000);
         }
 
   
@@ -89,13 +136,13 @@ let userData = (userDatas) =>{
     return (
         <>
 
-
+   
         {/* <NameContext.Provider value={users}> 
 
         </NameContext.Provider> */}
  
-        <ProtectedRoutes props={{users, setUsers}}/>
-          <dataEncrypt callbackProp={dataEncrypt('test','enc')}/>
+        {/* <ProtectedRoutes datakey={datakey}/> */}
+      
           
 
         <Card  style={{padding:'30px',paddingTop:'50px',boxShadow:'10px 10px rgba(0, 0, 0, 0.35)' }}>
@@ -144,4 +191,4 @@ let userData = (userDatas) =>{
 
 export default Login
 // const global = userD;
-// export const NameContext= createContext(UserDs);
+// export const NameContext= createContext('test');

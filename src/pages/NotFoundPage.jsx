@@ -4,10 +4,12 @@ function NotFoundPage(){
 
 
     return (<>
-    
-   <h1>404 Page not exist</h1> 
-    <Link to={"/"}> Back to website 
+    <center>
+    <h1>404 Page not exist</h1> 
+    <Link to={"/homepage"}> Back to website 
     </Link>
+    </center>
+
     </>)
 }
 export default NotFoundPage

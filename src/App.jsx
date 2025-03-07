@@ -8,6 +8,7 @@ import {createBrowserRouter,RouterProvider, Outlet} from 'react-router-dom'
 import './App.css'
 
 function App() {
+  
 
   // const router = createBrowserRouter([
   //   {path:"/",element:<LoginPage/>},
@@ -18,9 +19,11 @@ function App() {
   //   {path:"*", element:<NotFoundPage/>}
   // ]);
 
-  const temp = 'test from apps';
-  const isValid = true;
+
+
+
   const router = createBrowserRouter(
+    
     [
         {
             path: "*",
@@ -31,15 +34,15 @@ function App() {
           element: <RegisterPage />,
         },
         {
-      path: "/",
-      element: <LoginPage />,
+          path: "/",
+          element: <LoginPage />,
         },
         {
-      element: <ProtectedRoutes></ProtectedRoutes>,
+      element: <ProtectedRoutes ></ProtectedRoutes>,
       children: [
               {
                   path: "/homepage",
-                  element: <HomePage />,
+                  element: <HomePage  />,
               }
        
       ],
