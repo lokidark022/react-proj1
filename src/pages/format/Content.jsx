@@ -4,8 +4,116 @@ import Row from 'react-bootstrap/Row';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
+import axios from 'axios';
+import { useContext } from 'react';
+import {Context} from '../../App';
+import { jwtDecode } from "jwt-decode";
+
+
+
+
+
+
 function Content (){
 
+
+    var accessToken = '';
+    var refreshToken = '';
+
+
+    const {UserData, setUserData} = useContext(Context);
+    console.log(UserData);
+      accessToken = UserData.accessToken;
+      refreshToken = UserData.refreshToken;
+
+
+
+const axiosJWT = axios.create()
+//const axiosJWT = axios.create()
+
+const handleDelete = async (id) => {
+
+  //  console.log(accessToken)
+
+    // console.log(jwtDecode(accessToken));
+
+    axiosJWT.delete('http://localhost:5000/users/1',{headers:{"Authorization":"Bearer "+accessToken}})
+    .then(function (response) {
+        console.log(response)
+    })
+    .catch(function (error) {
+        console.log(error.response.status) // 401
+        console.log(error.response.data.error) //Please Authenticate or whatever returned from server
+      if(error.response.status==401){
+        console.log('401')
+      }
+    })
+
+
+
+  
+};
+
+// const refreshTokens = async ()=>{
+
+//     console.log('refresh time')
+  
+//     try {
+       
+//         const res = await axiosJWT.post("/refresh",{token:refreshToken});
+//         setUserData({...UserData,
+//             accessToken:accessToken,
+//             refreshToken:refreshToken,
+//         });
+//     } catch (error) {
+//         console.log(error);
+//     }
+
+// };
+
+
+const refreshTokens = async () => {
+    try {
+      const res = await axios.post("http://localhost:5000/refresh", { token: refreshToken });
+
+      console.log(res);
+      setUserData({
+        ...UserData,
+        accessToken: res.data.accessToken,
+        refreshToken: res.data.refreshToken,
+      });
+      return res.data;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+
+
+
+
+
+axiosJWT.interceptors.request.use(
+  async (config) => {
+    let currentDate = new Date();
+    const decodedToken = jwtDecode(accessToken);
+    if (decodedToken.exp * 1000 < currentDate.getTime()) {
+      const data = await refreshTokens();
+      config.headers["authorization"] = "Bearer " + data.accessToken;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+
+
+
+
+
+ 
 
     return (
         <>  
@@ -20,7 +128,7 @@ function Content (){
                             Some quick example text to build on the card title and make up the
                             bulk of the card's content.
                             </Card.Text>
-                            <Button variant="primary">Go somewhere</Button>
+                            <Button onClick={() => handleDelete(1)} variant="danger">Delete</Button>
                             </Card.Body>
                             </Card>
                 </Col>
@@ -34,7 +142,7 @@ function Content (){
                             Some quick example text to build on the card title and make up the
                             bulk of the card's content.
                             </Card.Text>
-                            <Button variant="primary">Go somewhere</Button>
+                            <Button onClick={() => handleDelete(2)} variant="danger">Delete</Button>
                             </Card.Body>
                             </Card>
                 
@@ -49,4 +157,9 @@ function Content (){
         </>
     )
 }
+
+
+
+
+
 export default Content

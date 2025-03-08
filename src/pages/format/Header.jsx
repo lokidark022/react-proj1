@@ -1,16 +1,8 @@
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import Cookies from 'js-cookie';
-import dataSecured from '../../components/core/dataSecured';
+
 function Header() {
-
-  var authData = Cookies.get('authData');
-  var tempKey = Cookies.get('tempKey');
-
-  authData = dataSecured(authData,'dec',tempKey);
-  var authData_obj =JSON.parse(JSON.parse(authData));
-  const email = authData_obj.email;
 
 
   return (
@@ -29,7 +21,7 @@ function Header() {
 
               </Navbar.Text>
 
-              <NavDropdown title={email} id="basic-nav-dropdown">
+              <NavDropdown title='admin' id="basic-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Logout</NavDropdown.Item>
          
              

@@ -8,14 +8,14 @@ import Card from 'react-bootstrap/Card'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Alert from 'react-bootstrap/Alert';
-import React, { useState, createContext, useEffect} from 'react';
-import {Link, useNavigate, Outlet} from 'react-router-dom'
+import React, { useState, useContext, useEffect} from 'react';
+import {Link, useNavigate, Outlet, Navigate} from 'react-router-dom'
 import  LoginCore from './core/LoginCore.js';
 import axios from 'axios'
 import ProtectedRoutes from '../util/ProtectedRoutes.jsx'
 import * as CryptoJS from 'crypto-js'
 import dataSecured from './core/dataSecured.js';
-import App from '../App.jsx'
+import {Context} from '../App.jsx'
 // import './css/Login.css'
 // const userDatas = [{test:'test'}];
 
@@ -52,9 +52,12 @@ let userData = (userDatas) =>{
 //  }
 
  function Login(){
+    let isValid = false;
+     const {UserData, setUserData} = useContext(Context);
+  // console.log( UserData);
     var datakey = "";
     //  const NameContext= createContext();
-    const NameContext = createContext("light");
+    // const NameContext = createContext("light");
     const [show, setShow] = useState(false);
      const [users, setUsers] = useState([]);
     
@@ -82,19 +85,23 @@ let userData = (userDatas) =>{
       try{
         const res = await axios.post('http://localhost:5000/',{email,password});
         const userDatas = res.data;
-        datakey = userDatas.dataKey;
-        Cookies.set('tempKey', datakey, { expires: 7 });
+     
+
+        setUserData(userDatas)
+        // datakey = userDatas.dataKey;
+        // Cookies.set('tempKey', datakey, { expires: 7 });
         // console.log(userDatas.dataKey);
-        const stringti = JSON.stringify(userDatas);
+       // const stringti = JSON.stringify(userDatas);
+        console.log(userDatas.isValid)
 
       
-          Cookies.set('authData', dataSecured(stringti,'enc',datakey), { expires: 7 });
-          const authData = Cookies.get('authData');
-          console.log(' encryp Data: ' + authData );
-          console.log(' Decrypt Data: ' + dataSecured(dataSecured(stringti,'enc',datakey),'dec', datakey));
+          // Cookies.set('authData', dataSecured(stringti,'enc',datakey), { expires: 7 });
+          // const authData = Cookies.get('authData');
+          // console.log(' encryp Data: ' + authData );
+          // console.log(' Decrypt Data: ' + dataSecured(dataSecured(stringti,'enc',datakey),'dec', datakey));
         
     
-            dataSecured(null,null,null);
+         
            
 
  
@@ -111,13 +118,13 @@ let userData = (userDatas) =>{
         // const test = JSON.stringify(userData2);
       
 
-        if(res.data.isValid){
+        // if(res.data.isValid){
           
      
           setTimeout(function() {
             navigate('/homepage');
           }, 1000);
-        }
+        // }
 
   
 
@@ -135,7 +142,7 @@ let userData = (userDatas) =>{
       
     return (
         <>
-
+        {/* <Navigate to={UserData.isValid ? '/homepage' : '/'}/>  */}
    
         {/* <NameContext.Provider value={users}> 
 

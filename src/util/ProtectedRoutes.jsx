@@ -8,21 +8,21 @@ import dataSecured from "../components/core/dataSecured";
 
 const ProtectedRoutes = ()=> {
 
-  var authData = Cookies.get('authData');
-  var tempKey = Cookies.get('tempKey');
-    if(authData === undefined){
+  // var authData = Cookies.get('authData');
+  // var tempKey = Cookies.get('tempKey');
+  //   if(authData === undefined){
       
-      console.log(authData);
+  //     console.log(authData);
       
-     return  <Navigate to="/"/>
-    }else{
-          authData = dataSecured(authData,'dec',tempKey);
-     var authData_obj =JSON.parse(JSON.parse(authData));
-     const isValid = authData_obj.isValid;
+  //    return  <Navigate to="/"/>
+  //   }else{
+  //         authData = dataSecured(authData,'dec',tempKey);
+  //    var authData_obj =JSON.parse(JSON.parse(authData));
+     const isValid = true;
      
 
     return isValid ? <Outlet/> : <Navigate to="/"/>
 
-    }
+    
 }
 export default ProtectedRoutes
