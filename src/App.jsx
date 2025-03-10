@@ -13,8 +13,7 @@ function App() {
   
   const [UserData, setUserData] = useState();
   const [UpdateState, SetupdateState] = useState(false);
-  const [toggleEffect, SettoggleEffect] = useState(false);
-  const navigate = useNavigate();
+
   var getCookie = '';
 
   ///////////////////////////////////////////////////////////////////////////////////
@@ -49,23 +48,7 @@ function App() {
 ///////////////////////////////////////////////////////////////////////////
 
 
-// useEffect(()=> {
-//   if(getCookie === undefined && UserData === undefined){
-//     console.log('No data from cookies and userData Please login');
 
-//     setTimeout(function() {
-//       navigate('/invalid');
-//     }, 1000);
-
-//     if(toggleEffect === true && UserData === undefined){
-//       SetupdateState(false);
-//       getCookie = JSON.parse(getCookie);
-//       // console.log(getCookie);
-//       console.log('updateState and cookie');
-//     }
-//   }
-
-// },[toggleEffect])
 
 ///////////////////////////////////////////////////////////////////////////
 

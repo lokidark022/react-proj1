@@ -1,6 +1,6 @@
-import React, { useState, useContext} from 'react';
+import React, { useState, useContext, useEffect} from 'react';
 import Header from './format/Header.jsx'
-import { useOutletContext, useLocation} from "react-router-dom";
+import { useOutletContext, useLocation, useNavigate} from "react-router-dom";
 import Content from './format/Content.jsx'
 import Footer from './format/Footer'
 import './css/HomePage.css'
@@ -11,8 +11,20 @@ import axios from 'axios'
 import Cookies from 'js-cookie';
 import { Context } from '../App.jsx';
 import dataSecured from "../components/core/dataSecured";
+
 function HomePage(){
-    
+    const navigate = useNavigate();
+    var getCookie= Cookies.get('cookieData');
+        useEffect(()=> {
+            if(getCookie === undefined){
+                navigate('/invalid');
+               // console.log('cookie is undefinned');
+            }
+
+        })
+
+      //  console.log(getCookie);
+
 //   var authData = Cookies.get('authData');
 //   var tempKey = Cookies.get('tempKey');
 

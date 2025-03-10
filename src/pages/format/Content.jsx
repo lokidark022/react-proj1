@@ -24,8 +24,14 @@ function Content (){
     const {UserData, setUserData} = useContext(Context);
     () => SetupdateState(true);
  //   console.log(UserData);
-      accessToken = UserData.accessToken;
-      refreshToken = UserData.refreshToken;
+ try {
+  accessToken = UserData.accessToken;
+  refreshToken = UserData.refreshToken;
+  
+ } catch (error) {
+  
+ }
+    
 
 
 
