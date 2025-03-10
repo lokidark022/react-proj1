@@ -25,21 +25,13 @@ function App() {
   ///////////////////////////////////////////////////////////////////////////////////
 
  function  fetchUserInfo  (email,accessToken){
-    // const email = 'admin@admin.com'
-    // const accessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhZG1pbkBhZG1pbi5jb20iLCJpYXQiOjE3NDE1ODg4NzUsImV4cCI6MTc0MTU5MTg3NX0.--_EDKaNFbTQknhnFISKGP30nygmRkkVVcohfAljY_4';
-    var result = [];
-     axiosJWT.post('http://localhost:5000/userinfo',{email:email, token: accessToken })
+   //  const emails = 'admin@admin.com'
+     //const accessTokens = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhZG1pbkBhZG1pbi5jb20iLCJpYXQiOjE3NDE1OTY3MDgsImV4cCI6MTc0MTU5NzAwOH0.7sEYg3d61wvAe3C9fTI_uOYKk4UUqtKVjyqwQeM5LvU';
+   // var result = [];
+     axiosJWT.get("http://localhost:5000/userinfo/",{email:email,headers:{"authorization":"Bearer "+accessToken} })
     .then(function (response) {
-      if(response.length == 0 ){
-        console.log(response.data.email)
-        console.log('no data');
-  
-      }else{
-        console.log('wth data');
-        console.log(response.data)
-     
-      }
-
+      SetUserInfo(response.data);
+      //console.log(response);
     // result = response;
     })
     .catch(function (error) {
@@ -51,10 +43,10 @@ function App() {
     })
 
     //console.log(result);
-    return result;
+    // return result;
 
   }
-console.log(fetchUserInfo());
+
   // useEffect(() => {
   //   const userInfos = fetchUserInfo();
 
@@ -95,7 +87,7 @@ console.log(fetchUserInfo());
           const accessToken = getCookie.accessToken;
           fetchUserInfo(getCookie.email,getCookie.accessToken);
          // const data =  getUserData(getCookie.refreshToken);
-          
+       //   fetchUserInfo();
          // console.log(data);
        
           ///////////////////////////////////////////////////////////////////////////
@@ -119,7 +111,7 @@ console.log(fetchUserInfo());
 
   },[UpdateState, UserData])
 
-
+console.log(UserInfo);
 ///////////////////////////////////////////////////////////////////////////
 // useMemo(() => {
 //     getCookieData = Cookies.get('cookieData');

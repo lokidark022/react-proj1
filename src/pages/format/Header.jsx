@@ -1,17 +1,52 @@
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import {UserInfoContext} from '../../App';
-import { useContext } from 'react';
+import {UserInfoContext,Context} from '../../App';
+import { useContext, useState,useEffect } from 'react';
+import axios from 'axios';
 function Header() {
+
   const {UserInfo, SetUserInfo} = useContext(UserInfoContext);
+  const {UserData, setUserData} = useContext(Context);
+  var email = '';
         try {
-          const userEmail = UserInfo.email
+          if(UserInfo === undefined){
+          //  console.log('Loading data');
+          }else{
+         //   console.log(UserInfo.email);
+             email =  UserInfo.email;
+          }
+
         } catch (error) {
           
         }
+
+
+  
+
+          const handleLogout = async (id) => {
+            const axiosJWT = axios.create()
+            const email = id.email;
+             const accessToken = UserData.accessToken;
+            console.log(accessToken)
+              axiosJWT.post('http://localhost:5000/logout',{headers:{"Authorization":"Bearer "+accessToken}})
+              .then(function (response) {
+                  console.log(response)
+              })
+              .catch(function (error) {
+                  console.log(error.response.status) // 401
+                  console.log(error.response.data.error) //Please Authenticate or whatever returned from server
+                if(error.response.status==401){
+                  console.log('401')
+                }
+              })
+          
+          
+          
+            
+          };
+          
    
-        //console.log(UserInfo.email);
 
   return (
 
@@ -29,8 +64,8 @@ function Header() {
 
               </Navbar.Text>
 
-              <NavDropdown title='test' id="basic-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">Logout</NavDropdown.Item>
+              <NavDropdown title={email} id="basic-nav-dropdown">
+              <NavDropdown.Item href="#" onClick={() =>handleLogout({email})} >Logout</NavDropdown.Item>
          
              
             
