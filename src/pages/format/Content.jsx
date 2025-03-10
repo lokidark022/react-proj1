@@ -6,9 +6,9 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import { useContext } from 'react';
-import {Context} from '../../App';
+import {Context,UpdateStates} from '../../App';
 import { jwtDecode } from "jwt-decode";
-
+import Cookies from 'js-cookie';
 
 
 
@@ -20,9 +20,10 @@ function Content (){
     var accessToken = '';
     var refreshToken = '';
 
-
+    const {UpdateState, SetupdateState} = useContext(UpdateStates)
     const {UserData, setUserData} = useContext(Context);
-    console.log(UserData);
+    () => SetupdateState(true);
+ //   console.log(UserData);
       accessToken = UserData.accessToken;
       refreshToken = UserData.refreshToken;
 
@@ -76,13 +77,22 @@ const refreshTokens = async () => {
     try {
       const res = await axios.post("http://localhost:5000/refresh", { token: refreshToken });
 
-      console.log(res);
+    //  console.log(res);
       setUserData({
         ...UserData,
         accessToken: res.data.accessToken,
         refreshToken: res.data.refreshToken,
       });
+
+
+       var cookieData = JSON.stringify(res.data);                  
+           Cookies.set('cookieData',cookieData,{ expires: 7 });
+
+
+
+
       return res.data;
+   
     } catch (err) {
       console.log(err);
     }
@@ -99,6 +109,7 @@ axiosJWT.interceptors.request.use(
     const decodedToken = jwtDecode(accessToken);
     if (decodedToken.exp * 1000 < currentDate.getTime()) {
       const data = await refreshTokens();
+      SetupdateState(true);
       config.headers["authorization"] = "Bearer " + data.accessToken;
     }
     return config;

@@ -88,28 +88,9 @@ let userData = (userDatas) =>{
      
 
         setUserData(userDatas)
-        // datakey = userDatas.dataKey;
-        // Cookies.set('tempKey', datakey, { expires: 7 });
-        // console.log(userDatas.dataKey);
-       // const stringti = JSON.stringify(userDatas);
-        console.log(userDatas.isValid)
-
-      
-          // Cookies.set('authData', dataSecured(stringti,'enc',datakey), { expires: 7 });
-          // const authData = Cookies.get('authData');
-          // console.log(' encryp Data: ' + authData );
-          // console.log(' Decrypt Data: ' + dataSecured(dataSecured(stringti,'enc',datakey),'dec', datakey));
-        
-    
-         
-           
-
- 
- 
-
-
-    
-
+        var cookieData = JSON.stringify(userDatas);
+            
+        Cookies.set('cookieData',cookieData,{ expires: 7 });
 
         // userData = res.data;
         userData(userDatas);
@@ -118,13 +99,13 @@ let userData = (userDatas) =>{
         // const test = JSON.stringify(userData2);
       
 
-        // if(res.data.isValid){
+        if(res.data.isValid){
           
      
           setTimeout(function() {
             navigate('/homepage');
           }, 1000);
-        // }
+         }
 
   
 
