@@ -19,15 +19,16 @@ function Content (){
 
     var accessToken = '';
     var refreshToken = '';
-
+    var email = '';
     const {UpdateState, SetupdateState} = useContext(UpdateStates)
     const {UserData, setUserData} = useContext(Context);
     () => SetupdateState(true);
  //   console.log(UserData);
  try {
   accessToken = UserData.accessToken;
-  refreshToken = UserData.refreshToken;
-  
+  refreshToken = UserData.refreshToken; 
+  email = UserData.email;
+
  } catch (error) {
   
  }
@@ -61,35 +62,19 @@ const handleDelete = async (id) => {
   
 };
 
-// const refreshTokens = async ()=>{
-
-//     console.log('refresh time')
-  
-//     try {
-       
-//         const res = await axiosJWT.post("/refresh",{token:refreshToken});
-//         setUserData({...UserData,
-//             accessToken:accessToken,
-//             refreshToken:refreshToken,
-//         });
-//     } catch (error) {
-//         console.log(error);
-//     }
-
-// };
-
 
 const refreshTokens = async () => {
     try {
-      const res = await axios.post("http://localhost:5000/refresh", { token: refreshToken });
+      const res = await axios.post("http://localhost:5000/refresh", {email:email, token: refreshToken });
 
     //  console.log(res);
       setUserData({
         ...UserData,
+        email:res.data.email,
         accessToken: res.data.accessToken,
         refreshToken: res.data.refreshToken,
       });
-
+        console.log(res.data);
 
        var cookieData = JSON.stringify(res.data);                  
            Cookies.set('cookieData',cookieData,{ expires: 7 });
