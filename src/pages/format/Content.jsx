@@ -7,45 +7,19 @@ import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import { useContext } from 'react';
 import {Context,UpdateStates} from '../../App';
-import { jwtDecode } from "jwt-decode";
-import Cookies from 'js-cookie';
-
-
-
-
+import { AuthVerify ,axiosJWT} from '../../components/core/authVerify';
 
 function Content (){
+const authVerify = AuthVerify();
+const {UserData, setUserData} = useContext(Context);
+const accessToken = UserData.accessToken;
 
-
-    var accessToken = '';
-    var refreshToken = '';
-    var email = '';
-    const {UpdateState, SetupdateState} = useContext(UpdateStates)
-    const {UserData, setUserData} = useContext(Context);
-    () => SetupdateState(true);
- //   console.log(UserData);
- try {
-  accessToken = UserData.accessToken;
-  refreshToken = UserData.refreshToken; 
-  email = UserData.email;
-
- } catch (error) {
-  
- }
-    
-
-
-
-const axiosJWT = axios.create()
-//const axiosJWT = axios.create()
-
+console.log(accessToken);
 const handleDelete = async (id) => {
 
-  //  console.log(accessToken)
 
-    // console.log(jwtDecode(accessToken));
 
-    axiosJWT.delete('http://localhost:5000/users/1',{headers:{"Authorization":"Bearer "+accessToken}})
+  axiosJWT.delete('http://localhost:5000/users/1',{headers:{"Authorization":"Bearer "+accessToken}})
     .then(function (response) {
         console.log(response)
     })
@@ -54,6 +28,8 @@ const handleDelete = async (id) => {
         console.log(error.response.data.error) //Please Authenticate or whatever returned from server
       if(error.response.status==401){
         console.log('401')
+      }else if(error.response.status==403){
+        console.log('403  Invalid token');
       }
     })
 
@@ -62,60 +38,6 @@ const handleDelete = async (id) => {
   
 };
 
-
-const refreshTokens = async () => {
-    try {
-      const res = await axios.post("http://localhost:5000/refresh", {email:email, token: refreshToken });
-
-    //  console.log(res);
-      setUserData({
-        ...UserData,
-        email:res.data.email,
-        accessToken: res.data.accessToken,
-        refreshToken: res.data.refreshToken,
-      });
-        console.log(res.data);
-
-       var cookieData = JSON.stringify(res.data);                  
-           Cookies.set('cookieData',cookieData,{ expires: 7 });
-
-
-
-
-      return res.data;
-   
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-
-
-
-
-
-axiosJWT.interceptors.request.use(
-  async (config) => {
-    let currentDate = new Date();
-    const decodedToken = jwtDecode(accessToken);
-    if (decodedToken.exp * 1000 < currentDate.getTime()) {
-      const data = await refreshTokens();
-      SetupdateState(true);
-      config.headers["authorization"] = "Bearer " + data.accessToken;
-    }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
-
-
-
-
-
-
- 
 
     return (
         <>  

@@ -86,12 +86,11 @@ let userData = (userDatas) =>{
         const res = await axios.post('http://localhost:5000/',{email,password});
         const userDatas = res.data;
      
-
+        
         setUserData(userDatas)
         var cookieData = JSON.stringify(userDatas);
-            
+            console.log(cookieData);
         Cookies.set('cookieData',cookieData,{ expires: 7 });
-
         // userData = res.data;
         userData(userDatas);
         setUsers(res.data);
